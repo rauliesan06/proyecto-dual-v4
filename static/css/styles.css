@@ -1,0 +1,257 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #e6f0fa, #f7f9fc);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: linear-gradient(to right, #4ba6e2, #2b7cb8);
+    color: white;
+    padding: 1em;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 a {
+    color: white;
+    font-size: 1.2em;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+header h1 a:hover {
+    opacity: 1;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+div {
+    background: white;
+    margin: 1em auto;
+    padding: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    width: 95%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #2b7cb8;
+    margin-bottom: 1em;
+    font-weight: 600;
+    font-size: 2em;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #4ba6e2;
+    outline: none;
+}
+
+input[type="radio"] {
+    margin: 0.5em;
+    outline: none;
+}
+
+.error-message {
+    color: #e63946;
+    font-size: 0.85em;
+    margin-top: 0.25em;
+    display: none;
+}
+
+
+button {
+    background: linear-gradient(to right, #4ba6e2, #2b7cb8);
+    color: white;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    min-width: 120px;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #2b7cb8, #1a5c96);
+}
+
+button:active {
+    transform: scale(1);
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    font-size: 1em;
+}
+
+th, td {
+    padding: 0.5em;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background: #4ba6e2;
+    color: white;
+    font-weight: 600;
+}
+
+/*Se le cambia el color a cada fila par*/
+tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+
+section {
+    display: flex;
+    gap: 1em;
+    margin: 1em auto;
+    width: 95%;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+section > div {
+    min-width: 300px;
+    margin: 0;
+    padding: 1em;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+a {
+    color: #4ba6e2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2b7cb8;
+}
+
+/* Diseño Responsive */
+@media (max-width: 768px) {
+    header {
+        padding: 0.75em;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        width: 100%;
+        text-align: center;
+        padding: 0.5em;
+    }
+
+    div {
+        width: 98%;
+        padding: 1em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        max-width: 100%;
+    }
+
+    button {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    /* Stack sections vertically on mobile */
+    section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    section > div {
+        min-width: 100%;
+    }
+
+    table {
+        font-size: 0.85em;
+    }
+
+    th, td {
+        padding: 0.4em;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 a {
+        font-size: 1.5em;
+    }
+
+    h1, h2 {
+        font-size: 1.8em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        font-size: 0.9em;
+        padding: 0.5em;
+    }
+
+    button {
+        padding: 0.5em 1em;
+        font-size: 0.9em;
+    }
+
+    .table-container {
+        margin: 0 -1em;
+        padding: 0 1em;
+    }
+}
+
+/* Accessibility */
+:focus {
+    outline: 2px solid #4ba6e2;
+    outline-offset: 2px;
+}

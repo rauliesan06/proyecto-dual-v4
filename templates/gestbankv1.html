@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestBankV1</title>
+    <link rel="icon" href="../static/images/logo-web.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <h1><a href="index.html">GestBank</a></h1>
+        <nav>
+            <a href="gestbankv1.html">GestBankV1</a>
+            <a href="gestbankv2.html">GestBankV2</a>
+        </nav>
+    </header>
+    <br>
+    <div>
+        <h1>Nuevo Movimiento</h1>
+        <form id="formMovimiento">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo" required>
+                <option value="" disabled selected>Seleccione un tipo de movimiento</option>
+                <option value="ingreso">Ingreso</option>
+                <option value="gasto">Gasto</option>
+            </select>
+            <br>
+            <label for="iban">IBAN</label>
+            <select id="iban" name="iban" required>
+                <option value="" disabled selected>Seleccione un IBAN</option>
+            </select>
+            <br>
+            <label for="cantidad">Cantidad</label>
+            <input type="number" id="cantidad" name="cantidad" required placeholder="0.00">
+            <br>
+            <br>
+            <button>Registrar</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        <h1>Actualizar Salarios</h1>
+        <button onclick="mostrarCuentas(), mostrarMovimientos()">Actualizar Salarios</button>
+    </div>
+    <section>
+        <div>
+            <h1>Cuentas Registradas</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Iban</td>
+                        <td>Saldo</td>
+                    </tr>
+                </thead>
+                <tbody id="cuentas"></tbody>
+            </table>
+        </div>
+        <div>
+            <h1>Movimientos Registrados</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Iban</td>
+                        <td>Tipo</td>
+                        <td>Saldo</td>
+                    </tr>
+                </thead>
+                <tbody id="movimientos"></tbody>
+            </table>
+        </div>
+    </section>
+    <script src="../static/js/v1.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestBank</title>
+    <link rel="icon" href="../static/images/logo-web.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">GestBank</a></h1>
+        <nav>
+            <a href="gestbankv1.html">GestBankV1</a>
+            <a href="gestbankv2.html">GestBankV2</a>
+        </nav>
+    </header>
+    <br>
+    <h2 style="text-align: center;">Bienvenido a GestBank</h2>
+    <button onclick="cargarCuentas()" style="width: 13%; margin: auto;">Cargar Cuentas desde CSV</button>
+    <div>
+        <h1>Nueva Cuenta</h1>
+        <form id="formCuenta">
+            <input type="radio" id="v1" name="version" value="1" required>
+            <label for="v1">GestBank v1</label>
+            <br>
+            <p>Si eliges esta opción se graban las cuentas en memoria interna</p>
+            <br>
+            <input type="radio" id="v2" name="version" value="2">
+            <label for="v2">GestBank v2</label>
+            <br>
+            <p>Si eliges esta opción se graban las cuentas en la tabla cuentas de la BD</p>
+            <br>
+            <br>
+            <label for="iban">IBAN</label>
+            <input type="text" id="iban" name="iban" required placeholder="ES000000000000000000">
+            <div id="ibanError" class="error-message">El IBAN debe comenzar con ES y tener 20 caracteres en total</div>
+            <br>
+            <br>
+            <label for="saldo">Saldo</label>
+            <input type="number" id="saldo" name="saldo" required placeholder="0.00">
+            <br>
+            <br>
+            <button>Registrar</button>
+        </form>
+    </div>
+    <script src="../static/js/script.js"></script>
+</body>
+</html>
