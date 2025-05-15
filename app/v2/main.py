@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.v2.database import SessionLocal, engine
-from app.v2.models import Base, Cuenta, Bizum
-
+from app.v2.models import Base, Usuario, Cuenta, Bizum
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -30,13 +30,32 @@ def get_db():
     finally:
         db.close()
 
+@app.post("/crear_usuario/")
+def crear_usuario(dni: str, password: str, db: Session = Depends(get_db)):
+    try:
+        if len(dni) == 9:
+            usuario = Usuario(dni=dni, password=password)
+            db.add(usuario)
+            db.commit()
+            db.refresh(usuario)
+            return usuario
+        else:
+            return {"mensaje":"Error el dni del usuario no es válido"}
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Error con la base de datos")
+
+
 @app.post("/crear_cuenta/")
-def crear_cuenta(iban: str, saldo: float = 0.0, db: Session = Depends(get_db)):
-    cuenta = Cuenta(iban=iban, saldo=saldo)
-    db.add(cuenta)
-    db.commit()
-    db.refresh(cuenta)
-    return cuenta
+def crear_cuenta(dni: str, iban: str, saldo: float = 0.0, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.dni==dni).first()
+    if usuario:
+        cuenta = Cuenta(iban=iban, usuario_id=dni, saldo=saldo)
+        db.add(cuenta)
+        db.commit()
+        db.refresh(cuenta)
+        return cuenta
+    else:
+        return "Error la cuenta no existe"
 
 @app.get("/cuentas/")
 def listar_cuentas(db: Session = Depends(get_db)):
