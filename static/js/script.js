@@ -1,3 +1,12 @@
+let dni = localStorage.getItem("dni");
+let usuario = document.getElementById('usuario');
+usuario.innerHTML = dni;
+
+function cerrarSesion() {
+    localStorage.removeItem("dni");
+    window.location.href = "login.html";
+}
+
 // Hace que esté constantemente escuchando
 document.getElementById('iban').addEventListener('input', reviewIban);
 function reviewIban(){
@@ -9,6 +18,7 @@ function reviewIban(){
         ibanError.style.display = "none"
     }
 }
+
 
 document.getElementById('formCuenta').addEventListener('submit', validarFormulario);
 function validarFormulario(event) {
@@ -28,7 +38,7 @@ function validarFormulario(event) {
     if(v1.checked){
         url = 'http://localhost:8001/registrar_cuenta/?iban='+iban+'&saldo='+saldo;
     } else if(v2.checked){
-        url = 'http://localhost:8000/crear_cuenta/?iban='+encodeURIComponent(iban)+'&saldo='+saldo;
+        url = 'http://localhost:8000/crear_cuenta/?dni='+dni+'&iban='+encodeURIComponent(iban)+'&saldo='+saldo;
     }
 
     // Llamar al la dirección de la función
@@ -52,7 +62,7 @@ function validarFormulario(event) {
 }
 
 function cargarCuentas(){
-    fetch('http://localhost:8000/importar_csv/', {
+    fetch('http://localhost:8000/importar_csv/?dni='+dni, {
         method: 'POST'
     })
     .then(response => {

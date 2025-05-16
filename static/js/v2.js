@@ -1,97 +1,25 @@
-let dni = document.getElementById('dni');
+let dni = localStorage.getItem("dni");
 
-// Hace que esté constantemente escuchando
+let usuario = document.getElementById('usuario');
+usuario.innerHTML = dni;
+
+function cerrarSesion() {
+    localStorage.removeItem("dni");
+    window.location.href = "login.html";
+}
+
+// Para mostrar los iban de la creación de los bizums y para la gestión de las cuentas
 document.addEventListener('DOMContentLoaded', () => {
-    const ibanInput = document.getElementById('iban');
-    if (ibanInput) { // ¡LA COMPROBACIÓN CLAVE!
-        ibanInput.addEventListener('input', reviewIban);
-    }
-
-    const formCuentaElement = document.getElementById('formCuenta');
-    if (formCuentaElement) { // ¡LA COMPROBACIÓN CLAVE!
-        formCuentaElement.addEventListener('submit', validarFormulario);
-    }
-
-    // Para mostrar los iban de la creación de los bizums y para la gestión de las cuentas
     cargarIBANes('ibanBizum');
     cargarIBANes('ibanCuenta');
 });
-
-function reviewIban(){
-    let iban = document.getElementById('iban').value
-    let ibanError = document.getElementById('ibanError')
-    if(!iban.startsWith('ES') || iban.length !== 24){
-        ibanError.style.display = "block"
-    } else{
-        ibanError.style.display = "none"
-    }
-}
-
-function validarFormulario(event) {
-    let iban = document.getElementById('iban').value;
-    let saldo = document.getElementById('saldo').value;
-    let v1 = document.getElementById('v1');
-    let v2 = document.getElementById('v2');
-
-    event.preventDefault(); // Evita que el formulario se envíe
-    
-    if (!iban.startsWith('ES') || iban.length !== 24) {
-        return;
-    }
-
-    let url = "";
-
-    if(v1.checked){
-        url = 'http://localhost:8001/registrar_cuenta/?iban='+iban+'&saldo='+saldo;
-    } else if(v2.checked){
-        url = 'http://localhost:8000/crear_cuenta/?iban='+encodeURIComponent(iban)+'&saldo='+saldo;
-    }
-
-    // Llamar al la dirección de la función
-    fetch(url, {
-        method: 'POST'
-    })
-    .then(response => {
-        if (response.ok){
-            document.getElementById('iban').value = "";
-            document.getElementById('saldo').value = "";
-            alert("Cuenta registrada correctamente");
-        } else{
-            alert("Algo salió mal");
-            console.log("Error al registrar la cuenta " + response.status);
-        }
-    })
-    .catch(error => { // Salta cuando el iban está repetido o cuando no hay conexión con el servidor
-        alert("Error de red o conexión: " + error.message);
-        console.error("Error:", error);
-    });
-}
-
-function cargarCuentas(){
-    fetch('http://localhost:8000/importar_csv/', {
-        method: 'POST'
-    })
-    .then(response => {
-        if(response.ok){
-            alert("Cuentas cargadas correctamente en la base de datos")
-        } else{
-            alert("Error al cargar las cuentas en la base de datos")
-        }
-    })
-    .catch(error => { // Salta cuando el iban está repetido o cuando no hay conexión con el servidor
-        alert("Error de red o conexión: " + error.message);
-        console.error("Error:", error);
-    });
-}
-
-
 
 // Función genérica para cargar IBANs en un <select>
 function cargarIBANes(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return;
 
-    fetch('http://localhost:8000/cuentas/')
+    fetch('http://localhost:8000/cuentas/?dni='+dni)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las cuentas');
@@ -117,7 +45,7 @@ function mostrarCuentas(){
     let tabla = document.getElementById('cuentas')
     tabla.innerHTML = "";
 
-    fetch('http://localhost:8000/cuentas/')
+    fetch('http://localhost:8000/cuentas/?dni='+dni)
         .then(response => {
             if(!response.ok){
                 throw new Error('Error al cargar las cuentas');
@@ -138,7 +66,7 @@ function mostrarBizums(){
     let tabla = document.getElementById('bizums');
     tabla.innerHTML = "";
 
-    fetch('http://localhost:8000/bizums/')
+    fetch('http://localhost:8000/bizums/?dni='+dni)
         .then(response => {
             if(!response.ok){
                 throw new Error("Error al cargar los bizums")
