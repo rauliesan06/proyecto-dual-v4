@@ -7,6 +7,11 @@ El proyecto también incluye características como la validación de datos y la 
 
 # 🧩 Funcionalidades
 
+Gestión de cuentas de usuarios:
+Crear usuarios
+Iniciar sesión en una cuenta
+Cerrar sesión
+
 Gestión de cuentas bancarias:
 
 Crear nuevas cuentas con IBAN y saldo inicial
@@ -26,7 +31,7 @@ Interfaz de usuario:
 Versión 1 (gestión en memoria interna)
 Versión 2 (almacenamiento en base de datos)
 Versión 3 (carga de cuentas a la base de datos a partir de un csv)
-
+Versión 4 (creación de usuarios, inicio de sesión, gestión de cuentas y bizums de cada usuario por separado, cerrar sesión)
 
 
 # 🧰 Tecnologías utilizadas
