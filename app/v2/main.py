@@ -62,7 +62,7 @@ def crear_cuenta(dni: str, iban: str, saldo: float = 0.0, db: Session = Depends(
         db.refresh(cuenta)
         return cuenta
     else:
-        return "Error la cuenta no existe"
+        return "Error el usuario no existe"
 
 @app.get("/cuentas/")
 def listar_cuentas(dni: str, db: Session = Depends(get_db)):
