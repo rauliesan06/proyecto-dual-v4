@@ -115,7 +115,7 @@ function mostrarBizums(){
                 fila += '<td>'+bizum.tipo_operacion+'</td>';
                 fila += '<td>'+bizum.monto+'€</td>';
                 let fecha = new Date(bizum.fecha);
-                let fechaFormateada = fecha.toLocaleString('es-ES')
+                let fechaFormateada = fecha.toLocaleString('es-ES');
                 fila += '<td>'+fechaFormateada+'</td></tr>';
             })
             descarga.innerHTML = `<button onclick='descargarMovimientos(${JSON.stringify(bizums)})'>Descargar Movimientos</button>`;
@@ -129,7 +129,7 @@ function descargarMovimientos(bizums){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(bizums)  // tu lista de bizums
+        body: JSON.stringify(bizums)  // La lista de bizums
     })
     .then(response => {
         if(response.ok){
