@@ -33,7 +33,7 @@ Botón de mostrar Bizums (muestra los Bizums(movimientos) de cada cuenta)
 
 Descargas de los movimientos:
 
-Se descargan los movimientos en un archivo csv  
+Se descargan los movimientos en un archivo csv
 
 
 Interfaz de usuario:
