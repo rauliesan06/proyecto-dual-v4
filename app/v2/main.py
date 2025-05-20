@@ -4,8 +4,9 @@ from app.v2.database import SessionLocal, engine
 from app.v2.models import Base, Usuario, Cuenta, Bizum
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
-
-
+from typing import List
+from pydantic import BaseModel
+from fastapi.responses import FileResponse
 
 Base.metadata.create_all(bind=engine)
 
@@ -93,6 +94,10 @@ def listar_bizums(dni: str, db: Session = Depends(get_db)):
         ibans.append(cuenta.iban)
     return db.query(Bizum).filter(Bizum.cuenta_id.in_(ibans)).all()
 
+@app.get("/bizums_cuenta/")
+def listar_bizums_cuenta(iban: str, db: Session = Depends(get_db)):
+    return db.query(Bizum).filter(Bizum.cuenta_id == iban).all()
+
 @app.post("/eliminar_cuenta/") # No hace falta insertar el dni ya que en la aplicación solo se mostrarán las cuentas del usuario
 def eliminar_cuenta(iban: str, db: Session = Depends(get_db)):
     cuenta = db.query(Cuenta).filter(Cuenta.iban == iban).first()
@@ -127,3 +132,18 @@ def importar_csv(dni: str, db: Session = Depends(get_db)):
         db.add(cuenta)
     db.commit()
     return {"mensaje":"Importación completada"}
+
+class BizumBase(BaseModel):
+    cuenta_id: str
+    tipo_operacion: str
+    monto: float
+    fecha: str
+
+@app.post("/descargar_movimientos/")
+def descargar_movimientos(bizums: List[BizumBase]):
+    nombre_archivo = "bizums.csv"
+    f = open(nombre_archivo, "w")
+    f.write("Cuenta, Tipo, Monto, Fecha\n")
+    for bizum in bizums:
+        f.write(f"{bizum.cuenta_id}, {bizum.tipo_operacion}, {bizum.monto}, {bizum.fecha}\n")
+    return FileResponse(nombre_archivo, media_type="text/csv", filename="bizums.csv")

@@ -56,8 +56,39 @@ function mostrarCuentas(){
             let fila = "";
             data.forEach(cuenta => {
                 fila += '<tr><td>'+cuenta.iban+'</td>';
-                fila += '<td>'+cuenta.saldo+'€</td></tr>';
+                fila += '<td>'+cuenta.saldo+'€</td>';
+                fila += `<td><button onclick="mostrarBizumsCuenta('${cuenta.iban}')">Mostrar Bizums</button></td></tr>`;
             })
+            tabla.innerHTML = fila;
+        })
+}
+
+function mostrarBizumsCuenta(iban){
+    let tabla = document.getElementById('bizums');
+    tabla.innerHTML = "";
+    let descarga = document.getElementById('descarga');
+    descarga.innerHTML = "";
+    let bizums = [];
+
+    fetch('http://localhost:8000/bizums_cuenta/?iban='+iban)
+        .then(response => {
+            if(!response.ok){
+                throw new Error("Error al cargar los bizums")
+            }
+            return response.json();
+        })
+        .then(data => {
+            bizums = data; // Guardamos los bizums
+            let fila = "";
+            data.forEach(bizum =>{
+                fila += '<tr><td>'+bizum.cuenta_id+'</td>';
+                fila += '<td>'+bizum.tipo_operacion+'</td>';
+                fila += '<td>'+bizum.monto+'€</td>';
+                let fecha = new Date(bizum.fecha);
+                let fechaFormateada = fecha.toLocaleString('es-ES');
+                fila += '<td>'+fechaFormateada+'</td></tr>';
+            })
+            descarga.innerHTML = `<button onclick='descargarMovimientos(${JSON.stringify(bizums)})'>Descargar Movimientos</button>`;
             tabla.innerHTML = fila;
         })
 }
@@ -65,6 +96,9 @@ function mostrarCuentas(){
 function mostrarBizums(){
     let tabla = document.getElementById('bizums');
     tabla.innerHTML = "";
+    let descarga = document.getElementById('descarga');
+    descarga.innerHTML = "";
+    let bizums = [];
 
     fetch('http://localhost:8000/bizums/?dni='+dni)
         .then(response => {
@@ -74,6 +108,7 @@ function mostrarBizums(){
             return response.json();
         })
         .then(data => {
+            bizums = data; // Guardamos los bizums
             let fila = "";
             data.forEach(bizum => {
                 fila += '<tr><td>'+bizum.cuenta_id+'</td>';
@@ -83,8 +118,26 @@ function mostrarBizums(){
                 let fechaFormateada = fecha.toLocaleString('es-ES')
                 fila += '<td>'+fechaFormateada+'</td></tr>';
             })
+            descarga.innerHTML = `<button onclick='descargarMovimientos(${JSON.stringify(bizums)})'>Descargar Movimientos</button>`;
             tabla.innerHTML = fila;
         })
+}
+
+function descargarMovimientos(bizums){
+    fetch("http://localhost:8000/descargar_movimientos/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bizums)  // tu lista de bizums
+    })
+    .then(response => {
+        if(response.ok){
+            alert("Se han descargado los movimientos correctamente.");
+        } else{
+            alert("Ha ocurrido un error en la descarga");
+        }
+    })
 }
 
 document.getElementById('formBizum').addEventListener('submit', registrarBizum);

@@ -26,13 +26,23 @@ Solicitar dinero (reduce el saldo)
 Consultar historial de transacciones
 
 
+Filtrado de movimientos:
+
+Botón de mostrar Bizums (muestra los Bizums(movimientos) de cada cuenta)
+
+
+Descargas de los movimientos:
+
+Se descargan los movimientos en un archivo csv  
+
+
 Interfaz de usuario:
 
 Versión 1 (gestión en memoria interna)
 Versión 2 (almacenamiento en base de datos)
 Versión 3 (carga de cuentas a la base de datos a partir de un csv)
 Versión 4 (creación de usuarios, inicio de sesión, gestión de cuentas y bizums de cada usuario por separado, cerrar sesión)
-
+Versión 5 (implementación del filtrado de movimientos de cada cuenta, y la descarga de movimientos en un archivo csv)
 
 # 🧰 Tecnologías utilizadas
 
