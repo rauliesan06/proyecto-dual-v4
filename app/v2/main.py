@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from pydantic import BaseModel
-from fastapi.responses import FileResponse
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -41,7 +41,7 @@ def crear_usuario(dni: str, password: str, db: Session = Depends(get_db)):
             db.refresh(usuario)
             return usuario
         else:
-            return {"mensaje":"Error el dni del usuario no es válido"}
+            raise HTTPException(status_code=400, detail="Error el dni del usuario no es válido")
     except SQLAlchemyError:
         raise HTTPException(status_code=500, detail="Error con la base de datos")
 
@@ -51,7 +51,7 @@ def iniciar_sesion(dni: str, password:str, db: Session = Depends(get_db)):
     if usuario:
         return usuario
     else:
-        raise HTTPException(status_code=401, detail="Error al iniciar sesión")
+        raise HTTPException(status_code=400, detail="Error al iniciar sesión")
 
 @app.post("/crear_cuenta/")
 def crear_cuenta(dni: str, iban: str, saldo: float = 0.0, db: Session = Depends(get_db)):
@@ -146,4 +146,5 @@ def descargar_movimientos(bizums: List[BizumBase]):
     f.write("Cuenta, Tipo, Monto, Fecha\n")
     for bizum in bizums:
         f.write(f"{bizum.cuenta_id}, {bizum.tipo_operacion}, {bizum.monto}, {bizum.fecha}\n")
-    return FileResponse(nombre_archivo, media_type="text/csv", filename="bizums.csv")
+    f.close()
+    return {"mensaje":"Descarga completada"}

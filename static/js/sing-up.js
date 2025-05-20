@@ -5,6 +5,11 @@ function registrarUsuario(event){
 
     event.preventDefault();
 
+    if(dni.length !== 9){
+        alert("El DNI debe tener 9 caracteres.")
+        return;
+    }
+
     fetch('http://localhost:8000/crear_usuario/?dni='+dni+'&password='+password, {
         method: 'POST'
     })
